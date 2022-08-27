@@ -1,3 +1,2 @@
-# 2001EE30_2022
-
-hello world!
+# CS384_2022
+Tuts Assignments
