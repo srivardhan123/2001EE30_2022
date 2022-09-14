@@ -100,3 +100,35 @@ with open('octant_input.csv','r') as file:
                 writer.writerow(row+[U_avg,V_avg,W_avg,float(row[1])-U_avg,float(row[2])-V_avg,float(row[3])-W_avg,octant_identification(float(row[1])-U_avg,float(row[2])-V_avg,float(row[3])-W_avg)])
             else :
                 writer.writerow(row + [' ',' ',' ',float(row[1])-U_avg,float(row[2])-V_avg,float(row[3])-W_avg,octant_identification(float(row[1])-U_avg,float(row[2])-V_avg,float(row[3])-W_avg)])
+
+#subtracting one row because that one row conatians a heading!
+total_rows = total_rows - 1
+
+#taking an user input, so that accordingly we divide the dataset and calculate individual octant number count.
+mod = 5000
+mod = int(mod)
+
+
+rows = total_rows//mod
+if (total_rows%mod!=0) :
+    rows+=1
+
+#here i have created 2D list which stores the count of octant no 1,-1,2,-2,3,-3,4,-4 in each interval of their mod value.
+#here we storiing for a particular input how many divisions the data set is made into, to count the frequency of each octant no in the particular divison(0-4999,5000-9999..).
+#intializing the 2d array with zero in all the cells.
+list1 = [[0 for i in range(0,9)] for j in range(rows)]
+
+#reading the duplicate_input file and storing the the each division value in a 2d list.
+with open('duplicate_input.csv', 'r') as file:
+    reader = csv.reader(file,delimiter=',')
+    #check stores the present number of the row.
+    check = 0
+    for row in reader:
+        #I have excluded this row because it contains headings.
+      if (row[10]!='Octant'):
+        check+=1
+        #check//val divides into 0-4999,5000-9999,10000-14999 ... of numbers into 0,1,2,... respective indexs.
+        list1[(check//mod)][int(row[10])+4] = list1[(check//mod)][int(row[10])+4] + 1
+
+#here in this variable i am storing overall count of all octant numbers.
+total_sum = octant_pos_1 + octant_pos_2 + octant_pos_3 + octant_pos_4 + octant_neg_1 + octant_neg_2 + octant_neg_3 + octant_neg_4
