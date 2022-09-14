@@ -76,3 +76,27 @@ def octant_identification(val,val1,val2):
         global octant_neg_4
         octant_neg_4 = octant_neg_4 + 1
         return int(-4)
+
+#created this variable to check total no of rows present.
+total_rows = 0
+
+#This duplicate_input file contains pre-processed data which includes U',V',W' and octant number.
+#opening the input file in read mode and printing the output in (duplicate_input.csv) file.
+
+with open('octant_input.csv','r') as file:
+    with open('duplicate_input.csv', 'w') as file1:
+        writer = csv.writer(file1)
+        #check variables stores the present row number in the for loop.
+        check = 0
+        #used the delimiter to seprate the each column
+        for row in csv.reader(file,delimiter='\t'):
+            check = check + 1
+            total_rows = total_rows + 1
+            #(check==1) means that we are in the first which should contain headings of the dataset.
+            if (check == 1) :
+                writer.writerow(row+["U Avg", "V Avg","W Avg","U'=U - U avg","V'=V-V avg","W'=W - W avg","Octant"])
+            elif (check == 2) :
+ #check==2 means the 2nd row, here we have separated this becuase in only 2nd row we should print u_avg,v_avg,w_avg and remaining rows should be left empty.
+                writer.writerow(row+[U_avg,V_avg,W_avg,float(row[1])-U_avg,float(row[2])-V_avg,float(row[3])-W_avg,octant_identification(float(row[1])-U_avg,float(row[2])-V_avg,float(row[3])-W_avg)])
+            else :
+                writer.writerow(row + [' ',' ',' ',float(row[1])-U_avg,float(row[2])-V_avg,float(row[3])-W_avg,octant_identification(float(row[1])-U_avg,float(row[2])-V_avg,float(row[3])-W_avg)])
