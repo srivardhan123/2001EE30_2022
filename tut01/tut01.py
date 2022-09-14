@@ -132,3 +132,35 @@ with open('duplicate_input.csv', 'r') as file:
 
 #here in this variable i am storing overall count of all octant numbers.
 total_sum = octant_pos_1 + octant_pos_2 + octant_pos_3 + octant_pos_4 + octant_neg_1 + octant_neg_2 + octant_neg_3 + octant_neg_4
+
+
+#now i am opening this duplicate_input.csv file in the read mode.
+#and wrtiing the whole file in the octant_output file.
+with open('duplicate_input.csv','r') as file:
+    with open('octant_output.csv', 'w') as file1:
+        writer = csv.writer(file1)
+        check = 0
+        #check variable stores the present row number in the for loop.
+        for row in csv.reader(file,delimiter=','):
+            check = check + 1
+            #if check==1 we need headings of the dataset
+            if (check == 1)  :
+                writer.writerow(row+["Octant ID"," ","1","-1","2","-2","3","-3","4","-4"])
+            #in the 2nd row we should print overall count of 1,-1,2,-2..
+            elif (check == 2):
+                writer.writerow(row+[" ","Overall Count",octant_pos_1,octant_neg_1,octant_pos_2,octant_neg_2,octant_pos_3,octant_neg_3,octant_pos_4,octant_neg_4])
+            #in the 3rd it should display the user input mod value.
+            elif (check == 3):
+                writer.writerow(row + ["User Input","Mod " + str(mod)])
+            #from here we should make divisions according to the input and if check>=(4+rows) means we need to print just till column octant id because we have already reached 
+            elif (check < (4+rows)) :
+                #in the first row it should start with 00000 so i have made an if condition.
+                #and i have added column values using list and this stores the octant count of 1,-1,2,-2,3,-3,4,-4. 
+                #i have stored -4,-3,-2,-1,1,2,3,4 octants in the list at the index of 0,1,2,3,5,6,7,8 respectively and here i am adding in the output file accordingly.
+                if (check == 4):
+                    writer.writerow(row+[" ",".0000 - " +str((check-3)*mod-1),list1[check-4][5],list1[check-4][3],list1[check-4][6],list1[check-4][2],list1[check-4][7],list1[check-4][1],list1[check-4][8],list1[check-4][0]])
+                else :
+                    writer.writerow(row+[" ",str((check-4)*mod)+"-" +str(min((check-3)*mod-1,total_rows)),list1[check-4][5],list1[check-4][3],list1[check-4][6],list1[check-4][2],list1[check-4][7],list1[check-4][1],list1[check-4][8],list1[check-4][0]])
+            else :
+                #when we have covered till (x-29745) then no need to print those overall counts after it.
+                writer.writerow(row)
