@@ -128,11 +128,14 @@ with open('duplicate_input.csv', 'r') as file:
       if (row[10]!='Octant'):
         check+=1
         #check//val divides into 0-4999,5000-9999,10000-14999 ... of numbers into 0,1,2,... respective indexs.
-        list1[(check//mod)][int(row[10])+4] = list1[(check//mod)][int(row[10])+4] + 1
+        if(check%5000!=0):
+            list1[(check//mod)][int(row[10])+4] = list1[(check//mod)][int(row[10])+4] + 1
+        else:
+            list1[(check//mod)-1][int(row[10])+4] = list1[(check//mod)-1][int(row[10])+4] + 1
 
 #here in this variable i am storing overall count of all octant numbers.
 total_sum = octant_pos_1 + octant_pos_2 + octant_pos_3 + octant_pos_4 + octant_neg_1 + octant_neg_2 + octant_neg_3 + octant_neg_4
-
+total_rows-=1
 
 #now i am opening this duplicate_input.csv file in the read mode.
 #and wrtiing the whole file in the octant_output file.
