@@ -128,7 +128,7 @@ with open('duplicate_input.csv', 'r') as file:
       if (row[10]!='Octant'):
         check+=1
         #check//val divides into 0-4999,5000-9999,10000-14999 ... of numbers into 0,1,2,... respective indexs.
-        if(check%5000!=0):
+        if(check%mod!=0):
             list1[(check//mod)][int(row[10])+4] = list1[(check//mod)][int(row[10])+4] + 1
         else:
             list1[(check//mod)-1][int(row[10])+4] = list1[(check//mod)-1][int(row[10])+4] + 1
