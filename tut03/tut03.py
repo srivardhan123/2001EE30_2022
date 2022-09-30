@@ -103,4 +103,47 @@ try:
                 store_dict[-4]=0
             #here i am storing the count if it is greater than previous_max_coun...
             max_store_dict[int(dataframe.loc[i,"Octant"])] = max(max_store_dict[int(dataframe.loc[i,"Octant"])],store_dict[int(dataframe.loc[i,"Octant"])])
+       #so we got longest subsequence length in the form dictonary named max_store_dict.
 
+        #now i have created new 2 dictonaries..which stores the intial count 0.
+        #store_dict1 will store the current sequence length.
+        #store_dict2 will store the frequecny of longest subsequence length.
+        store_dict1 = {1:0,2:0,3:0,4:0,-1:0,-2:0,-3:0,-4:0}
+        store_dict2 = {1:0,2:0,3:0,4:0,-1:0,-2:0,-3:0,-4:0}
+        for i in range(len(dataframe)):
+            #same logic like above.
+            store_dict1[int(dataframe.loc[i,"Octant"])]+=1
+            if (int(dataframe.loc[i,"Octant"])!=1):
+                store_dict1[1]=0
+            if (int(dataframe.loc[i,"Octant"])!=2):
+                store_dict1[2]=0
+            if (int(dataframe.loc[i,"Octant"])!=3):
+                store_dict1[3]=0
+            if (int(dataframe.loc[i,"Octant"])!=4):
+                store_dict1[4]=0
+            if (int(dataframe.loc[i,"Octant"])!=-1):
+                store_dict1[-1]=0
+            if (int(dataframe.loc[i,"Octant"])!=-2):
+                store_dict1[-2]=0
+            if (int(dataframe.loc[i,"Octant"])!=-3):
+                store_dict1[-3]=0
+            if (int(dataframe.loc[i,"Octant"])!=-4):
+                store_dict1[-4]=0
+            #if present freq is equal to max freq then increase it by 1.
+            if(store_dict1[int(dataframe.loc[i,"Octant"])]==max_store_dict[int(dataframe.loc[i,"Octant"])]):
+                store_dict2[int(dataframe.loc[i,"Octant"])]+=1
+
+        arr = ['+1','-1','+2','-2','+3','-3','+4','-4']
+
+        # now printing the columns of count,longest subsequence length,count...from their dictonaries.
+        for i in range(8):
+            dataframe.loc[i,'count'] = arr[i]
+            dataframe.loc[i,'Longest Subsequence Length'] = max_store_dict[int(arr[i])]
+            dataframe.loc[i,'Count'] = store_dict2[int(arr[i])]
+
+        #finally exporting this into output file by keeping index=False becuase we dont need the index column.
+        dataframe.to_excel('output_octant_longest_subsequence.xlsx',index=False)
+    except:
+        print("input file is not present in the same folder/file doesnot exists")
+except:
+    print("install pandas,numpy and import it")
