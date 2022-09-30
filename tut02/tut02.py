@@ -230,4 +230,21 @@ try:
             #now storing the temp_pres_row in the global variable present_rows
             global present_rows
             present_rows = temp_pres_row
+                  #calling the the function here to print overall tranistion count!.
+        #overall transition count is range from 0 to 29745... and present_rows indicate the row value where our table is start going to print.
+        functions(0,29745,present_rows,0)
+
+        for i in range(rows):
+                #total no of transitons is equal to rows value.
+                #low value,high value would be from 0 to mod-1,mod to 2*mod-1...so on..
+                #present_rows value changes globally....
+                functions(int(i*mod),min(int((i+1)*mod),29745),present_rows,i+1)
+
+        #finally exporting this into output file by keeping index=False becuase we dont need the index column.
+        dataframe.to_excel('output_octant_transition_identify.xlsx',index=False)
+    except:
+        print("you have taken input as zero.")
+except:
+        print("input file is not present in the same folder")
+
 
