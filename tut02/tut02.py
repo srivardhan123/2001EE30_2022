@@ -158,4 +158,76 @@ try:
                 #storing the value of i before breaking because the next transistions stores after this row value.
                 present_rows = i
                 break
+        #creating this function to avoid printing mod transistion counts each time for each range of numbers.
+        #so we can just call the function for each set of ranges...
+        #lowvalue means from which row we are going to start our dataset..
+        #highvalue means which row we are ending our dataset.
+        #temp_pres_row(local variable inside the func) is the present row which i am going to add in dataframe or print in the excel.
+        #flag is the variable which will be helpful to us to differetiate us whether it is overall transition count or mod tranistion count.
+        def functions(lowvalue,highvalue,temp_pres_row,flag):
+            #adding +2 becuase between each mod transistion table there are two lines gap..
+            temp_pres_row+=2
+            #intitally adding to,from,Overall Transition Count or Mod Transition Count in the respetives places acrdng to temp_pres_row.
+            if(flag==0):
+                dataframe.loc[temp_pres_row,' '] = "Overall Transition Count"
+            else :
+                dataframe.loc[temp_pres_row,' '] = "Mod Transition Count"
+            temp_pres_row+=1
+            #here if flag is not zero means its a mod tranistion count 
+            if(flag!=0 and flag!=1):
+                dataframe.loc[temp_pres_row,' '] = str(lowvalue) + " - " + str(highvalue-1)
+            if(flag==1):
+                dataframe.loc[temp_pres_row,' '] = "0.000" + " - " + str(highvalue-1)
+            dataframe.loc[temp_pres_row,'+1'] = "To"
+            temp_pres_row+=1
+            #created this 2d list which stores the values like a transistion table which shown in output file 
+            #-4,-3,-2,-1,1,2,3,4 indicates 0,1,2,3,5,6,7,8 respectively in the indexes of 2d list
+            #-4 to 1 transition indicates list1[0][5]...
+            temp_list = [[0 for i in range(0,9)] for j in range(0,9)]
+            # range of for loop is just from lowvalue to highvalue because we need for only the particular transition..
+            for i in range(lowvalue,highvalue):
+                #added this if conditon because last transition wont possible 29744 to 29745..
+                #in the range low to high value....(highvalue-1 to highvalue is also included in the transition)
+                if(i!=29744):
+                    temp_list[int(dataframe['Octant'][i])+4][int(dataframe['Octant'][i+1])+4]+=1
+
+            #now here at present temp_pres_row i am storing all the headings count,+1,....-4..
+            dataframe.loc[temp_pres_row,' '] = "Count"
+            dataframe.loc[temp_pres_row,'+1'] = '+1'
+            dataframe.loc[temp_pres_row,'+2'] = '+2'
+            dataframe.loc[temp_pres_row,'+3'] = '+3'
+            dataframe.loc[temp_pres_row,'+4'] = '+4'
+            dataframe.loc[temp_pres_row,'-1'] = '-1'
+            dataframe.loc[temp_pres_row,'-2'] = '-2'
+            dataframe.loc[temp_pres_row,'-3'] = '-3'
+            dataframe.loc[temp_pres_row,'-4'] = '-4'
+            temp_pres_row+=1
+            #increasing the temp_pres_row becuase in the next row we have to print according to output file.
+            #i have wrote temp_pres_rpw,+1,+2...so on becuase in the particular columns in each row i have printed accrdng to output file.
+            dataframe.loc[temp_pres_row,'Octant Id'] = 'From'
+            dataframe.loc[temp_pres_row,' '] = '1'
+            dataframe.loc[temp_pres_row+1,' '] = '-1'
+            dataframe.loc[temp_pres_row+2,' '] = '2'
+            dataframe.loc[temp_pres_row+3,' '] = '-2'
+            dataframe.loc[temp_pres_row+4,' '] = '3'
+            dataframe.loc[temp_pres_row+5,' '] = '-3'
+            dataframe.loc[temp_pres_row+6,' '] = '4'
+            dataframe.loc[temp_pres_row+7,' '] = '-4'
+
+            #now printing the mod transistion values which are stored in the temp_list..
+            #printing it in the excel sheet in the rows accoridng to the output file with help of temp_pres_row to temp_pres_row+8.
+            for i in range(temp_pres_row ,temp_pres_row+8):
+                    dataframe.loc[i,'+1'] = temp_list[int(dataframe.loc[i,' '])+4][5]
+                    dataframe.loc[i,'-1'] = temp_list[int(dataframe.loc[i,' '])+4][3]
+                    dataframe.loc[i,'+2'] = temp_list[int(dataframe.loc[i,' '])+4][6]
+                    dataframe.loc[i,'-2'] = temp_list[int(dataframe.loc[i,' '])+4][2]
+                    dataframe.loc[i,'+3'] = temp_list[int(dataframe.loc[i,' '])+4][7]
+                    dataframe.loc[i,'-3'] = temp_list[int(dataframe.loc[i,' '])+4][1]
+                    dataframe.loc[i,'+4'] = temp_list[int(dataframe.loc[i,' '])+4][8]
+                    dataframe.loc[i,'-4'] = temp_list[int(dataframe.loc[i,' '])+4][0]
+            #increasing the temp_pres_row value by 8...
+            temp_pres_row= temp_pres_row + 8
+            #now storing the temp_pres_row in the global variable present_rows
+            global present_rows
+            present_rows = temp_pres_row
 
