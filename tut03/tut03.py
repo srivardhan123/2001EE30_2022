@@ -78,4 +78,29 @@ try:
         for i in range(len(dataframe)):
             #storing this by calling an octant_identification function which returns as char which it belomgs..
             dataframe.loc[i,"Octant"] = octant_identification(float(dataframe.loc[i,"U' = U -U Avg"]),float(dataframe.loc[i,"V' = V -V Avg"]),float(dataframe.loc[i,"W' = W -W Avg"]))
+        #creating the two dictonaries one stores the max length of continous subsequence the other stores the present sequence length,,
+        store_dict = {1:0,2:0,3:0,4:0,-1:0,-2:0,-3:0,-4:0}
+        max_store_dict = {1:0,2:0,3:0,4:0,-1:0,-2:0,-3:0,-4:0}
+        for i in range(len(dataframe)):
+            store_dict[int(dataframe.loc[i,"Octant"])]+=1
+            #when i found any octant number then i increase the count of that octant number.
+            #and remaining octant number count i will make it to zero.!
+            if (int(dataframe.loc[i,"Octant"])!=1):
+                store_dict[1]=0
+            if (int(dataframe.loc[i,"Octant"])!=2):
+                store_dict[2]=0
+            if (int(dataframe.loc[i,"Octant"])!=3):
+                store_dict[3]=0
+            if (int(dataframe.loc[i,"Octant"])!=4):
+                store_dict[4]=0
+            if (int(dataframe.loc[i,"Octant"])!=-1):
+                store_dict[-1]=0
+            if (int(dataframe.loc[i,"Octant"])!=-2):
+                store_dict[-2]=0
+            if (int(dataframe.loc[i,"Octant"])!=-3):
+                store_dict[-3]=0
+            if (int(dataframe.loc[i,"Octant"])!=-4):
+                store_dict[-4]=0
+            #here i am storing the count if it is greater than previous_max_coun...
+            max_store_dict[int(dataframe.loc[i,"Octant"])] = max(max_store_dict[int(dataframe.loc[i,"Octant"])],store_dict[int(dataframe.loc[i,"Octant"])])
 
