@@ -82,3 +82,80 @@ try:
         dataframe.loc[i,"Octant"] = octant_identification(float(dataframe.loc[i,"U' = U -U Avg"]),float(dataframe.loc[i,"V' = V -V Avg"]),float(dataframe.loc[i,"W' = W -W Avg"]))
 
     #taking an input from the user manually..
+    mod  = int(5000)
+    #total no of rows present in the dataset.
+    total_rows = len(dataframe)
+    try:
+        rows = total_rows//mod
+        if (total_rows%mod!=0):
+            rows+=1
+        #rows vairiables stores total no of divisions made...
+
+        #this list stores the overall count of 1's 2's..-1's..-4's in the dataset with divisons included in it.
+        #in the first row of the list it contains 0-mod-1 divisosion values, in the 2nd row it contains mod-2*mod-1 values..
+        list1 = [[0 for i in range(0,9)] for j in range(rows)]
+        #ranges array stores the range like 0-4999,5000-9999....etc
+        ranges = []
+        ranges.append('0.0000 - ' + str(mod-1))
+        for i in range(1,rows):
+            #appending it into ranges with help forloop and converting the int value into string using str func.
+            ranges.append(str(mod*i) + '-' + str(min(mod*(i+1)-1,total_rows-1)))
+
+        check = 0
+        for row in range(len(dataframe)):
+            check+=1
+            #in this way by dividing it with mod .....it goes to the respective rows.
+            if(check%5000!=0):
+                #in the list1 -4,-3,-2,-1,1,2,3,4 belongs to column 0,1,2,3,5,6,7,8.
+                #so gradually increasing the count of list1...whenever i found the respective octant number.
+                list1[(check//mod)][int(dataframe.loc[row,'Octant'])+4] = list1[(check//mod)][int(dataframe.loc[row,'Octant'])+4] + 1
+            else:
+                list1[(check//mod)-1][int(dataframe.loc[row,'Octant'])+4] = list1[(check//mod)-1][int(dataframe.loc[row,'Octant'])+4] + 1
+
+        #creating one more column called octant id..
+        dataframe["Octant Id"] = ' '
+        #at 1st row we are storing the user input data...
+        dataframe.loc[1,'Octant Id'] = "user input"
+        #creating one more empty column with no column heading.
+        dataframe[' '] = ' '
+        dataframe.loc[0,' '] = 'Overall Count'
+        dataframe.loc[1,' '] = 'Mod '+ str(mod)
+        #adding the empty columns +1,-1.... in the dataset .
+        dataframe['+1'] = ' '
+        dataframe['-1'] = ' '
+        dataframe['+2'] = ' '
+        dataframe['-2'] = ' '
+        dataframe['+3'] = ' '
+        dataframe['-3'] = ' '
+        dataframe['+4'] = ' '
+        dataframe['-4'] = ' '
+        #here storing the overall count of 1's,2's..-4's in the dataframe at respective indexes.
+        dataframe.loc[0,'+1'] = x1
+        dataframe.loc[0,'+2'] = x2
+        dataframe.loc[0,'+3'] = x3
+        dataframe.loc[0,'+4'] = x4
+        dataframe.loc[0,'-1'] = y1
+        dataframe.loc[0,'-2'] = y2
+        dataframe.loc[0,'-3'] = y3
+        dataframe.loc[0,'-4'] = y4
+
+        ### present_rows (THIS VARIABLE STORE THE VALUE OF ROW AT PRESENT WE ARE GOING TO WRITE IN THE DATAFRAME(EXCEL))
+        present_rows = 0
+        #here now adding the no of 1's,2's....-4's in the respective ranges from list into the dataframe..
+        for i in range(len(dataframe)):
+            if (i>=2 and i<(2+len(ranges))):
+                dataframe.loc[i,' '] = ranges[i-2]
+                #as previously said +1 means 5 column ...
+                dataframe.loc[i,'+1'] = list1[i-2][5]
+                dataframe.loc[i,'-1'] = list1[i-2][3]
+                dataframe.loc[i,'+3'] = list1[i-2][7]
+                dataframe.loc[i,'-2'] = list1[i-2][2]
+                dataframe.loc[i,'-3'] = list1[i-2][1]
+                dataframe.loc[i,'+2'] = list1[i-2][6]
+                dataframe.loc[i,'+4'] = list1[i-2][8]
+                dataframe.loc[i,'-4'] = list1[i-2][0]    
+            elif (i==(2+len(ranges))):
+                #storing the value of i before breaking because the next transistions stores after this row value.
+                present_rows = i
+                break
+
