@@ -78,6 +78,16 @@ try:
         for i in range(len(dataframe)):
             #storing this by calling an octant_identification function which returns as char which it belomgs..
             dataframe.loc[i,"Octant"] = octant_identification(float(dataframe.loc[i,"U' = U -U Avg"]),float(dataframe.loc[i,"V' = V -V Avg"]),float(dataframe.loc[i,"W' = W -W Avg"]))
+
+        #adding 4new columns in the dataframe.
+        dataframe[' '] = ' '
+        #this indicates the +1,-1,+2,-2,...-4
+        dataframe['count'] = ' '
+        #this stores the longest subsequence length..
+        dataframe['Longest Subsequence Length'] = ' '
+        #this stores the no of sequences which has length equal to maxi length
+        dataframe['Count'] = ' '
+
         #creating the two dictonaries one stores the max length of continous subsequence the other stores the present sequence length,,
         store_dict = {1:0,2:0,3:0,4:0,-1:0,-2:0,-3:0,-4:0}
         max_store_dict = {1:0,2:0,3:0,4:0,-1:0,-2:0,-3:0,-4:0}
@@ -103,7 +113,8 @@ try:
                 store_dict[-4]=0
             #here i am storing the count if it is greater than previous_max_coun...
             max_store_dict[int(dataframe.loc[i,"Octant"])] = max(max_store_dict[int(dataframe.loc[i,"Octant"])],store_dict[int(dataframe.loc[i,"Octant"])])
-       #so we got longest subsequence length in the form dictonary named max_store_dict.
+
+        #so we got longest subsequence length in the form dictonary named max_store_dict.
 
         #now i have created new 2 dictonaries..which stores the intial count 0.
         #store_dict1 will store the current sequence length.
@@ -144,6 +155,6 @@ try:
         #finally exporting this into output file by keeping index=False becuase we dont need the index column.
         dataframe.to_excel('output_octant_longest_subsequence.xlsx',index=False)
     except:
-        print("input file is not present in the same folder/file doesnot exists")
+        print("input file doesnot exists/compilation error")
 except:
     print("install pandas,numpy and import it")
