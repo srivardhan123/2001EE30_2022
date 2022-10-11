@@ -54,3 +54,27 @@ def octant_longest_subsequence_count_with_range():
                     y4+=1
                     return "-4"
             #adding the columns accoridng it my use and intially keeping it empty.
+            #adding the columns accoridng it my use and intially keeping it empty.
+            dataframe['U Avg'] = ' '
+            dataframe['V Avg'] = ' '
+            dataframe['W Avg'] = ' '
+            #using pandas library mean function i have caluclated mean of U,V,W and assigned it in the column of U avg,V avg,W avg. 
+            #inserting the averge values at first row using loc function.
+            dataframe.loc[0,'U Avg'] = dataframe['U'].mean()
+            dataframe.loc[0,'V Avg'] = dataframe['V'].mean()
+            dataframe.loc[0,'W Avg'] = dataframe['W'].mean()
+            #here creating some more columns which are given in the output..
+            dataframe["U' = U -U Avg"] = ' '
+            dataframe["V' = V -V Avg"] = ' '
+            dataframe["W' = W -W Avg"] = ' '
+            for i in dataframe.index:
+                #here subtracting tow columns and storing it into the diff column by using iloc function!.
+                #float function converts the data type.
+                dataframe.loc[i,"U' = U -U Avg"] = float(dataframe.loc[i,'U']) - float(dataframe.loc[0,'U Avg'])
+                dataframe.loc[i,"V' = V -V Avg"] = float(dataframe.loc[i,'V']) - float(dataframe.loc[0,'V Avg'])
+                dataframe.loc[i,"W' = W -W Avg"] = float(dataframe.loc[i,'W']) - float(dataframe.loc[0,'W Avg'])
+            #addming one more column to store the value of octants in each row.
+            dataframe["Octant"] = ' '
+            for i in range(len(dataframe)):
+                #storing this by calling an octant_identification function which returns as char which it belomgs..
+                dataframe.loc[i,"Octant"] = octant_identification(float(dataframe.loc[i,"U' = U -U Avg"]),float(dataframe.loc[i,"V' = V -V Avg"]),float(dataframe.loc[i,"W' = W -W Avg"]))
