@@ -81,8 +81,8 @@ try:
             dataframe.loc[i,"Octant"] = octant_identification(float(dataframe.loc[i,"U' = U -U Avg"]),float(dataframe.loc[i,"V' = V -V Avg"]),float(dataframe.loc[i,"W' = W -W Avg"]))
 
         #taking an input from the user manually..
-
         mod  = int(5000)
+
         #total no of rows present in the dataset.
         total_rows = len(dataframe)
         try:
@@ -105,7 +105,7 @@ try:
             for row in range(len(dataframe)):
                 check+=1
                 #in this way by dividing it with mod .....it goes to the respective rows.
-                if(check%5000!=0):
+                if(check%mod!=0):
                     #in the list1 -4,-3,-2,-1,1,2,3,4 belongs to column 0,1,2,3,5,6,7,8.
                     #so gradually increasing the count of list1...whenever i found the respective octant number.
                     list1[(check//mod)][int(dataframe.loc[row,'Octant'])+4] = list1[(check//mod)][int(dataframe.loc[row,'Octant'])+4] + 1
