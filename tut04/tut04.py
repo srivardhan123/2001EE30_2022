@@ -54,7 +54,6 @@ def octant_longest_subsequence_count_with_range():
                     y4+=1
                     return "-4"
             #adding the columns accoridng it my use and intially keeping it empty.
-            #adding the columns accoridng it my use and intially keeping it empty.
             dataframe['U Avg'] = ' '
             dataframe['V Avg'] = ' '
             dataframe['W Avg'] = ' '
@@ -78,3 +77,105 @@ def octant_longest_subsequence_count_with_range():
             for i in range(len(dataframe)):
                 #storing this by calling an octant_identification function which returns as char which it belomgs..
                 dataframe.loc[i,"Octant"] = octant_identification(float(dataframe.loc[i,"U' = U -U Avg"]),float(dataframe.loc[i,"V' = V -V Avg"]),float(dataframe.loc[i,"W' = W -W Avg"]))
+            dataframe["Octant"] = ' '
+            for i in range(len(dataframe)):
+                #storing this by calling an octant_identification function which returns as char which it belomgs..
+                dataframe.loc[i,"Octant"] = octant_identification(float(dataframe.loc[i,"U' = U -U Avg"]),float(dataframe.loc[i,"V' = V -V Avg"]),float(dataframe.loc[i,"W' = W -W Avg"]))            #adding 4new columns in the dataframe.
+            dataframe[' '] = ' '
+            #this indicates the +1,-1,+2,-2,...-4
+            dataframe['Count'] = ' '
+            #this stores the longest subsequence length..
+            dataframe['Longest Subsequence Length'] = ' '
+            #this stores the no of sequences which has length equal to maxi length
+            dataframe['Count '] = ' '
+            #creating the two dictonaries one stores the max length of continous subsequence the other stores the present sequence length,,
+            store_dict = {1:0,2:0,3:0,4:0,-1:0,-2:0,-3:0,-4:0}
+            max_store_dict = {1:0,2:0,3:0,4:0,-1:0,-2:0,-3:0,-4:0}
+            for i in range(len(dataframe)):
+                store_dict[int(dataframe.loc[i,"Octant"])]+=1
+                #when i found any octant number then i increase the count of that octant number.
+                #and remaining octant number count i will make it to zero.!
+                if (int(dataframe.loc[i,"Octant"])!=1):
+                    store_dict[1]=0
+                if (int(dataframe.loc[i,"Octant"])!=2):
+                    store_dict[2]=0
+                if (int(dataframe.loc[i,"Octant"])!=3):
+                    store_dict[3]=0
+                if (int(dataframe.loc[i,"Octant"])!=4):
+                    store_dict[4]=0
+                if (int(dataframe.loc[i,"Octant"])!=-1):
+                    store_dict[-1]=0
+                if (int(dataframe.loc[i,"Octant"])!=-2):
+                    store_dict[-2]=0
+                if (int(dataframe.loc[i,"Octant"])!=-3):
+                    store_dict[-3]=0
+                if (int(dataframe.loc[i,"Octant"])!=-4):
+                    store_dict[-4]=0
+                #here i am storing the count if it is greater than previous_max_coun...
+                max_store_dict[int(dataframe.loc[i,"Octant"])] = max(max_store_dict[int(dataframe.loc[i,"Octant"])],store_dict[int(dataframe.loc[i,"Octant"])])
+            #so we got longest subsequence length in the form dictonary named max_store_dict
+            #now i have created new 2 dictonaries..which stores the intial count 0.
+            #store_dict1 will store the current sequence length.
+            #store_dict2 will store the frequecny of longest subsequence length.
+            store_dict1 = {1:0,2:0,3:0,4:0,-1:0,-2:0,-3:0,-4:0}
+            store_dict2 = {1:0,2:0,3:0,4:0,-1:0,-2:0,-3:0,-4:0}
+            #i have created this 8_arrays, each array stores the ending time of longest subsequence length.
+            range_list1 = []
+            #the above list stores the ending time '+1' of longest subsequence length.
+            range_list2 = []
+            #the above list stores the ending time '+2' of longest subsequence length.
+            range_list3 = []
+            range_list4 = []
+            #the above list stores the ending time '+4' of longest subsequence length.
+            range_list_minus1 = []
+            range_list_minus2 = []
+            #the above list stores the ending time '-2' of longest subsequence length.
+            range_list_minus3 = []
+            range_list_minus4 = []
+            #the above list stores the ending time '-4' of longest subsequence length.
+            for i in range(len(dataframe)):
+                #same logic like above.
+                store_dict1[int(dataframe.loc[i,"Octant"])]+=1
+                if (int(dataframe.loc[i,"Octant"])!=1):
+                    store_dict1[1]=0
+                if (int(dataframe.loc[i,"Octant"])!=2):
+                    store_dict1[2]=0
+                if (int(dataframe.loc[i,"Octant"])!=3):
+                    store_dict1[3]=0
+                if (int(dataframe.loc[i,"Octant"])!=4):
+                    store_dict1[4]=0
+                if (int(dataframe.loc[i,"Octant"])!=-1):
+                    store_dict1[-1]=0
+                if (int(dataframe.loc[i,"Octant"])!=-2):
+                    store_dict1[-2]=0
+                if (int(dataframe.loc[i,"Octant"])!=-3):
+                    store_dict1[-3]=0
+                if (int(dataframe.loc[i,"Octant"])!=-4):
+                    store_dict1[-4]=0
+                #if present freq is equal to max freq then increase it by 1.
+                if(store_dict1[int(dataframe.loc[i,"Octant"])]==max_store_dict[int(dataframe.loc[i,"Octant"])]):
+                    store_dict2[int(dataframe.loc[i,"Octant"])]+=1
+             #here when present_freq == max_freq then it means this is the end point of longest subseqnce, so i am storing the time at this row in the array.
+             #i am stroing it in the respective array accordingly.     
+                    if (int(dataframe.loc[i,"Octant"])==1):
+                        range_list1.append(float(dataframe.loc[i,"Time"]))
+                    elif (int(dataframe.loc[i,"Octant"])==2):
+                        range_list2.append(float(dataframe.loc[i,"Time"]))
+                    elif (int(dataframe.loc[i,"Octant"])==3):
+                        range_list3.append(float(dataframe.loc[i,"Time"]))
+                    elif (int(dataframe.loc[i,"Octant"])==4):
+                        range_list4.append(float(dataframe.loc[i,"Time"]))
+                    elif (int(dataframe.loc[i,"Octant"])==-1):
+                        range_list_minus1.append(float(dataframe.loc[i,"Time"]))
+                    elif (int(dataframe.loc[i,"Octant"])==-2):
+                        range_list_minus2.append(float(dataframe.loc[i,"Time"]))
+                    elif (int(dataframe.loc[i,"Octant"])==-3):
+                        range_list_minus3.append(float(dataframe.loc[i,"Time"]))
+                    elif (int(dataframe.loc[i,"Octant"])==-4):
+                        range_list_minus4.append(float(dataframe.loc[i,"Time"]))
+            arr = ['+1','-1','+2','-2','+3','-3','+4','-4']
+            # now printing the columns of count,longest subsequence length,count...from their dictonaries.
+            for i in range(8):
+                dataframe.loc[i,'Count'] = arr[i]
+                dataframe.loc[i,'Longest Subsequence Length'] = max_store_dict[int(arr[i])]
+                dataframe.loc[i,'Count '] = store_dict2[int(arr[i])]
