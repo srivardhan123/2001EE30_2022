@@ -179,3 +179,80 @@ def octant_longest_subsequence_count_with_range():
                 dataframe.loc[i,'Count'] = arr[i]
                 dataframe.loc[i,'Longest Subsequence Length'] = max_store_dict[int(arr[i])]
                 dataframe.loc[i,'Count '] = store_dict2[int(arr[i])]
+
+            #here i have created the columns according to output_file.
+            dataframe['     '] = ' '
+            dataframe['Count  '] = ' '
+            dataframe['Longest Subsequence Length '] = ' '
+            dataframe['Count      '] = ' '
+            #this index maintains the current row in the output file.(where we have to print)
+            j = 0
+            for i in range(8):
+                #here there are total 8divisions like +1,-1,+2,-2,+3,-3,+4,-4.
+                flag = 0
+                #with help of flag variable i have differentiated that in the first 2rows of ach division i should print from to etc
+                #and in the remaining rows need to print from time to to time
+                for xxx in range(store_dict2[int(arr[i])]+2):
+                    flag+=1
+                    if (flag==1):
+                        dataframe.loc[j,'Count  '] = arr[i]
+                        dataframe.loc[j,'Longest Subsequence Length '] = max_store_dict[int(arr[i])]
+                        dataframe.loc[j,'Count      '] = store_dict2[int(arr[i])]
+                    elif (flag==2):
+                        dataframe.loc[j,'Count  '] = "Time"
+                        dataframe.loc[j,'Longest Subsequence Length '] = "From"
+                        dataframe.loc[j,'Count      '] = "To"
+                    else:
+                        #in the Count        column according to 1,-1,2,-2,3,-3,4,-4 i should take the respective array of time.
+                        if (i==0):
+                            #difference between each particular division is 0.01 so to find start time, we need to subtract the longest squbsqnce length*0.01 from end time.
+                            dataframe.loc[j,'Longest Subsequence Length '] = range_list1[flag-3] - (0.01)*(max_store_dict[int(arr[i])]-1)
+                            #can store the directly array value as it is end time.
+                            dataframe.loc[j,'Count      '] = range_list1[flag-3]
+                        elif (i==1):
+                            dataframe.loc[j,'Longest Subsequence Length '] = range_list_minus1[flag-3] - (0.01)*(max_store_dict[int(arr[i])]-1)
+                            dataframe.loc[j,'Count      '] = range_list_minus1[flag-3]                
+                        elif (i==2):
+                            dataframe.loc[j,'Longest Subsequence Length '] = range_list2[flag-3] - (0.01)*(max_store_dict[int(arr[i])]-1)
+                            dataframe.loc[j,'Count      '] = range_list2[flag-3]
+                        elif (i==3):
+                            dataframe.loc[j,'Longest Subsequence Length '] = range_list_minus2[flag-3] - (0.01)*(max_store_dict[int(arr[i])]-1)
+                            dataframe.loc[j,'Count      '] = range_list_minus2[flag-3]
+                        elif (i==4):
+                            dataframe.loc[j,'Longest Subsequence Length '] = range_list3[flag-3] - (0.01)*(max_store_dict[int(arr[i])]-1)
+                            dataframe.loc[j,'Count      '] = range_list3[flag-3]
+                        elif (i==5):
+                            dataframe.loc[j,'Longest Subsequence Length '] = range_list_minus3[flag-3] - (0.01)*(max_store_dict[int(arr[i])]-1)
+                            dataframe.loc[j,'Count      '] = range_list_minus3[flag-3]
+                        elif (i==6):
+                            dataframe.loc[j,'Longest Subsequence Length '] = range_list4[flag-3] - (0.01)*(max_store_dict[int(arr[i])]-1)
+                            dataframe.loc[j,'Count      '] = range_list4[flag-3]
+                        elif (i==7):
+                            dataframe.loc[j,'Longest Subsequence Length '] = range_list_minus4[flag-3] - (0.01)*(max_store_dict[int(arr[i])]-1)
+                            dataframe.loc[j,'Count      '] = range_list_minus4[flag-3]
+                    j+=1  
+            #increase j by 1 as we are going to next row...   
+                        #finally exporting this into output file by keeping index=False becuase we dont need the index column.
+            dataframe.to_excel('output_octant_longest_subsequence_with_range.xlsx',index=False)   
+        except:
+            print("Input file doesnot exists/Compilation error")
+    except:
+        print("Install pandas,numpy and import it")
+
+
+###Code
+
+from platform import python_version
+ver = python_version()
+
+if ver == "3.8.10":
+    print("Correct Version Installed")
+else:
+    print("Please install 3.8.10. Instruction are present in the GitHub Repo/Webmail. Url: https://pastebin.com/nvibxmjw")
+
+
+octant_longest_subsequence_count_with_range()
+
+#This shall be the last lines of the code.
+end_time = datetime.now()
+print('Duration of Program Execution: {}'.format(end_time - start_time))
