@@ -53,3 +53,53 @@ def octant_range_names(mod):
             global y4
             y4+=1
             return "-4"
+  #creating more columns according to the output file.
+    dataframe['U Avg'] = ' '
+    dataframe['V Avg'] = ' '
+    dataframe['W Avg'] = ' '
+    #using pandas library mean function i have caluclated mean of U,V,W and assigned it in the column of U avg,V avg,W avg. 
+    #inserting the averge values at first row using loc function.
+    dataframe.loc[0,'U Avg'] = dataframe['U'].mean()
+    dataframe.loc[0,'V Avg'] = dataframe['V'].mean()
+    dataframe.loc[0,'W Avg'] = dataframe['W'].mean()
+    #here creating some more columns which are given in the output..
+    dataframe["U' = U -U Avg"] = ' '
+    dataframe["V' = V -V Avg"] = ' '
+    dataframe["W' = W -W Avg"] = ' '
+    for i in dataframe.index:
+        #here subtracting tow columns and storing it into the diff column by using iloc function!.
+        #float function converts the data type.
+        dataframe.loc[i,"U' = U -U Avg"] = float(dataframe.loc[i,'U']) - float(dataframe.loc[0,'U Avg'])
+        dataframe.loc[i,"V' = V -V Avg"] = float(dataframe.loc[i,'V']) - float(dataframe.loc[0,'V Avg'])
+        dataframe.loc[i,"W' = W -W Avg"] = float(dataframe.loc[i,'W']) - float(dataframe.loc[0,'W Avg'])
+    #addming one more column to store the value of octants in each row.
+    dataframe["Octant"] = ' '
+    for i in range(len(dataframe)):
+        #storing this by calling an octant_identification function which returns as char which it belomgs..
+        dataframe.loc[i,"Octant"] = octant_identification(float(dataframe.loc[i,"U' = U -U Avg"]),float(dataframe.loc[i,"V' = V -V Avg"]),float(dataframe.loc[i,"W' = W -W Avg"]))
+    #total no of rows present in the dataset.
+    total_rows = len(dataframe)
+    rows = total_rows//mod
+    if (total_rows%mod!=0):
+        rows+=1
+    #rows vairiables stores total no of divisions made according to input/mod value.
+    #this "list1" stores the overall count of 1's 2's..-1's..-4's in the dataset with divisons included in it.
+    #in the first row of the list it contains 0-mod-1 divisosion values, in the 2nd row it contains mod-2*mod-1 values..
+    list1 = [[0 for i in range(0,9)] for j in range(rows)]
+    #ranges array stores the range like 0-4999,5000-9999....etc
+    ranges = []
+    ranges.append('0.0000 - ' + str(mod-1))
+    for i in range(1,rows):
+        #appending it into ranges with help forloop and converting the int value into string using str func.
+        ranges.append(str(mod*i) + '-' + str(min(mod*(i+1)-1,total_rows-1)))
+    check = 0
+    for row in range(len(dataframe)):
+        check+=1
+        #in this way by dividing it with mod .....it goes to the respective rows.
+        if(check%mod!=0):
+            #in the list1 -4,-3,-2,-1,1,2,3,4 belongs to column 0,1,2,3,5,6,7,8.
+            #so gradually increasing the count of list1...whenever i found the respective octant number.
+            list1[(check//mod)][int(dataframe.loc[row,'Octant'])+4] = list1[(check//mod)][int(dataframe.loc[row,'Octant'])+4] + 1
+        else:
+            list1[(check//mod)-1][int(dataframe.loc[row,'Octant'])+4] = list1[(check//mod)-1][int(dataframe.loc[row,'Octant'])+4] + 1
+    #creating one more column called octant id..
