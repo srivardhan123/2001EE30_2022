@@ -103,3 +103,47 @@ def octant_range_names(mod):
         else:
             list1[(check//mod)-1][int(dataframe.loc[row,'Octant'])+4] = list1[(check//mod)-1][int(dataframe.loc[row,'Octant'])+4] + 1
     #creating one more column called octant id..
+    dataframe["Octant Id"] = ' '
+    #at 1st row we are storing the user input data...
+    dataframe.loc[1,'Octant Id'] = "user input"
+    #creating one more empty column with no column heading.
+    dataframe[' '] = ' '
+    dataframe.loc[0,' '] = 'Overall Count'
+    dataframe.loc[1,' '] = 'Mod '+ str(mod)
+    #adding the empty columns +1,-1.... in the dataset .
+    dataframe['+1'] = ' '
+    dataframe['-1'] = ' '
+    dataframe['+2'] = ' '
+    dataframe['-2'] = ' '
+    dataframe['+3'] = ' '
+    dataframe['-3'] = ' '
+    dataframe['+4'] = ' '
+    dataframe['-4'] = ' '
+    #here storing the overall count of 1's,2's..-4's in the dataframe at respective indexes.
+    dataframe.loc[0,'+1'] = x1
+    dataframe.loc[0,'+2'] = x2
+    dataframe.loc[0,'+3'] = x3
+    dataframe.loc[0,'+4'] = x4
+    dataframe.loc[0,'-1'] = y1
+    dataframe.loc[0,'-2'] = y2
+    dataframe.loc[0,'-3'] = y3
+    dataframe.loc[0,'-4'] = y4
+    ### present_rows (THIS VARIABLE STORE THE VALUE OF ROW AT PRESENT WE ARE GOING TO WRITE IN THE DATAFRAME(EXCEL))
+    present_rows = 0
+    #here now adding the no of 1's,2's....-4's in the respective ranges from list into the dataframe..
+    for i in range(len(dataframe)):
+        if (i>=2 and i<(2+len(ranges))):
+            dataframe.loc[i,' '] = ranges[i-2]
+            #as previously said +1 means 5 column ...
+            dataframe.loc[i,'+1'] = list1[i-2][5]
+            dataframe.loc[i,'-1'] = list1[i-2][3]
+            dataframe.loc[i,'+3'] = list1[i-2][7]
+            dataframe.loc[i,'-2'] = list1[i-2][2]
+            dataframe.loc[i,'-3'] = list1[i-2][1]
+            dataframe.loc[i,'+2'] = list1[i-2][6]
+            dataframe.loc[i,'+4'] = list1[i-2][8]
+            dataframe.loc[i,'-4'] = list1[i-2][0]    
+        elif (i==(2+len(ranges))):
+            #storing the value of i before breaking because the next transistions stores after this row value.
+            present_rows = i
+            break
