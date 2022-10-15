@@ -53,7 +53,7 @@ def octant_range_names(mod):
             global y4
             y4+=1
             return "-4"
-  #creating more columns according to the output file.
+   #creating more columns according to the output file.
     dataframe['U Avg'] = ' '
     dataframe['V Avg'] = ' '
     dataframe['W Avg'] = ' '
@@ -218,3 +218,67 @@ def octant_range_names(mod):
         storing_rank1_modvalues[store_least_octant]+=1
         #inserting the rank1 octant name.
         dataframe.loc[i+2,'Rank1 Octant Name'] = octant_name_dict[store_least_octant]
+
+    #now started printing the frequency of rank1 octant id manually.
+    #present_row indicates the row position where i should start my octant id,octant name ,count of rank1 modules row.
+    present_row = 5 + rows
+    #printing in the excel sheet according to the octput file.
+    dataframe.loc[present_row,'+1'] = "Octant ID"
+    dataframe.loc[present_row+1,'+1'] = "1"
+    dataframe.loc[present_row+2,'+1'] = "-1"
+    dataframe.loc[present_row+3,'+1'] = "2"
+    dataframe.loc[present_row+4,'+1'] = "-2"
+    dataframe.loc[present_row+5,'+1'] = "3"
+    dataframe.loc[present_row+6,'+1'] = "-3"
+    dataframe.loc[present_row+7,'+1'] = "4"
+    dataframe.loc[present_row+8,'+1'] = "-4"
+    dataframe.loc[present_row,'-1'] = "Octant Name"
+    dataframe.loc[present_row+1,'-1'] = "Internal outward interaction"
+    dataframe.loc[present_row+2,'-1'] = "External outward interaction"
+    dataframe.loc[present_row+3,'-1'] = "External Ejection"
+    dataframe.loc[present_row+4,'-1'] = "Internal Ejection"
+    dataframe.loc[present_row+5,'-1'] = "External inward interaction"
+    dataframe.loc[present_row+6,'-1'] = "Internal inward interaction"
+    dataframe.loc[present_row+7,'-1'] = "Internal sweep"
+    dataframe.loc[present_row+8,'-1'] = "External sweep"
+    dataframe.loc[present_row,'+2'] = "Count of Rank 1 Mod values"
+    #as i have stored each frequency of each rank1 octant id in the storing_rank1_modvalues dict.. 
+    dataframe.loc[present_row+1,'+2'] = storing_rank1_modvalues[1]
+    dataframe.loc[present_row+2,'+2'] = storing_rank1_modvalues[-1]
+    dataframe.loc[present_row+3,'+2'] = storing_rank1_modvalues[2]
+    dataframe.loc[present_row+4,'+2'] = storing_rank1_modvalues[-2]
+    dataframe.loc[present_row+5,'+2'] = storing_rank1_modvalues[3]
+    dataframe.loc[present_row+6,'+2'] = storing_rank1_modvalues[-3]
+    dataframe.loc[present_row+7,'+2'] = storing_rank1_modvalues[4]
+    dataframe.loc[present_row+8,'+2'] = storing_rank1_modvalues[-4]
+    #now converting whole dataframe into excel format.
+    dataframe.to_excel('octant_output_ranking_excel.xlsx',index=False)
+
+    from platform import python_version
+    ver = python_version()
+
+    if ver == "3.8.10":
+        print("Correct Version Installed")
+    else:
+        print("Please install 3.8.10. Instruction are present in the GitHub Repo/Webmail. Url: https://pastebin.com/nvibxmjw")
+
+mod=5000 
+octant_range_names(mod)
+    #This shall be the last lines of the code.
+end_time = datetime.now()
+print('Duration of Program Execution: {}'.format(end_time - start_time))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
