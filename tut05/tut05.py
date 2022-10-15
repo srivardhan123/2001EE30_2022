@@ -147,3 +147,74 @@ def octant_range_names(mod):
             #storing the value of i before breaking because the next transistions stores after this row value.
             present_rows = i
             break
+    #now adding the rank columns according to output file.
+    dataframe['Rank 1'] = ' '
+    dataframe['Rank 2'] = ' '
+    dataframe['Rank 3'] = ' '
+    dataframe['Rank 4'] = ' '
+    dataframe['Rank 5'] = ' '
+    dataframe['Rank 6'] = ' '
+    dataframe['Rank 7'] = ' '
+    dataframe['Rank 8'] = ' '
+    #as overall counts of each octant is independent of input value,by manually we can fill the rank of each octant.
+    dataframe.loc[0,'Rank 1'] = 8
+    dataframe.loc[0,'Rank 2'] = 3
+    dataframe.loc[0,'Rank 3'] = 1
+    dataframe.loc[0,'Rank 4'] = 5
+    dataframe.loc[0,'Rank 5'] = 4
+    dataframe.loc[0,'Rank 6'] = 6
+    dataframe.loc[0,'Rank 7'] = 7
+    dataframe.loc[0,'Rank 8'] = 2
+    #adding more column according to output file.
+    dataframe['Rank1 Octant ID'] = ' '
+    dataframe['Rank1 Octant Name'] = ' '
+    #here also for overall count i have added manually.
+    dataframe.loc[0,'Rank1 Octant ID'] = 2
+    dataframe.loc[0,'Rank1 Octant Name'] = "External Ejection"
+    #create this dict to respctive octant id to respctve octant name.
+    octant_name_dict = {1:"Internal outward interaction",-1:"External outward interaction",2:"External Ejection",-2:"Internal Ejection",3:"External inward interaction",-3:"Internal inward interaction",4:"Internal sweep",-4:"External sweep"}
+    #here i am storing the count of each octant in the rank1 octant id using the dictonary with intial count = 0
+    storing_rank1_modvalues = {1:0,-1:0,2:0,-2:0,3:0,-3:0,4:0,-4:0}
+    for i in range(rows):
+        #each iteration indicates each particular division of total_rows.
+        list2 = []
+        #in the list2 i am appending pair of integers..(count of octant id for that particular division,octant id).
+        list2.append((list1[i][0],-4))
+        list2.append((list1[i][1],-3))
+        list2.append((list1[i][2],-2))
+        list2.append((list1[i][3],-1))
+        list2.append((list1[i][5],1))
+        list2.append((list1[i][6],2))
+        list2.append((list1[i][7],3))
+        list2.append((list1[i][8],4))
+        #here i am sorting the list2 , according to ascending order for count of  octant id.
+        list2.sort()
+        #in the temo_dict i am storing the rank of each octant in the integer form.
+        temp_dict = {-1:0,-2:0,-3:0,-4:0,1:0,2:0,3:0,4:0}
+        flag = 8
+        #store_least_octant variable  will store the rank1 octant id.
+        store_least_octant = 0
+        #created the temps varaible to identify that right now we are rank1 octant id.
+        temps = 0
+        #iterating the list2 with pair of integers where a = count of octant id in this mod division, b = octant id
+        for a,b in list2:
+            temps+=1
+            if (temps==8):
+                store_least_octant = b
+            temp_dict[b] = flag
+            flag-=1
+        #now writing the values in their respetive column and row using loc func,
+        dataframe.loc[i+2,'Rank 1'] = temp_dict[1]
+        dataframe.loc[i+2,'Rank 2'] = temp_dict[-1]
+        dataframe.loc[i+2,'Rank 3'] = temp_dict[2]
+        dataframe.loc[i+2,'Rank 4'] = temp_dict[-2]
+        dataframe.loc[i+2,'Rank 5'] = temp_dict[3]
+        dataframe.loc[i+2,'Rank 6'] = temp_dict[-3]
+        dataframe.loc[i+2,'Rank 7'] = temp_dict[4]
+        dataframe.loc[i+2,'Rank 8'] = temp_dict[-4]
+        #as store_least_octant contains the rank1 so below step is done.
+        dataframe.loc[i+2,'Rank1 Octant ID'] = store_least_octant
+        #here maintaining the frequency of rank1 octant id using the dictonary
+        storing_rank1_modvalues[store_least_octant]+=1
+        #inserting the rank1 octant name.
+        dataframe.loc[i+2,'Rank1 Octant Name'] = octant_name_dict[store_least_octant]
