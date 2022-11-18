@@ -548,4 +548,288 @@ def octant_analysis(mod):
         f2 = f.replace("input","output")
         f1= f2.replace('.xlsx'," cm_vel_octant_analysis_mod_"+str(mod)+".xlsx")
         dataframe.to_excel(f1,index=False)
+        wb=openpyxl.load_workbook(f1)   
+        ws=wb['Sheet1']
+
+        #top,bottom,left,right is respective side border for the cell.
+        top = Side(border_style='thin',color='000000')
+        bottom = Side(border_style='thin',color='000000')
+        left = Side(border_style='thin',color='000000')
+        right = Side(border_style='thin',color='000000')
+        border = Border(top=top,bottom=bottom,left=left,right=right)
+
+        #ranges array stores the cell which i need to border.
+        #according the format , i have made the ranges list .
+        ranges=ws['N1':'N'+str(rows+2)]
+        ranges1 = ws['O1':'O'+str(rows+2)]
+        ranges2 = ws['P1':'P'+str(rows+2)]
+        ranges3 = ws['Q1':'Q'+str(rows+2)]
+        ranges4 = ws['R1':'R'+str(rows+2)]
+        ranges5 = ws['S1':'S'+str(rows+2)]
+        ranges6 = ws['T1':'T'+str(rows+2)]
+        ranges7 = ws['U1':'U'+str(rows+2)]
+        ranges8 = ws['V1':'V'+str(rows+2)]
+        ranges9 = ws['W1':'W'+str(rows+2)]
+        ranges10 = ws['X1':'X'+str(rows+2)]
+        ranges11 = ws['Y1':'Y'+str(rows+2)]
+        ranges12 = ws['Z1':'Z'+str(rows+2)]
+        ranges13 = ws['AA1':'AA'+str(rows+2)]
+        ranges14 = ws['AB1':'AB'+str(rows+2)]
+        ranges15 = ws['AC1':'AC'+str(rows+2)]
+        ranges16 = ws['AD1':'AD'+str(rows+2)]
+        ranges17 = ws['AE1':'AE'+str(rows+2)]
+        ranges18 = ws['AF1':'AF'+str(rows+2)]
+
+
+        ranges19 = ws['AE'+str(rows+4):'AE'+str(rows+12)]
+        ranges20 = ws['AC'+str(rows+4):'AC'+str(rows+12)]
+        ranges21 = ws['AD'+str(rows+4):'AD'+str(rows+12)]
+
+        ranges22 = ws['AS1':'AS10']
+        ranges23 = ws['AU1':'AU10']
+        ranges24 = ws['AT1':'AT10']
+
+        ranges25 = ws['AW1':'AW'+str(present_row_var+1)]
+        ranges26 = ws['AX1':'AX'+str(present_row_var+1)]
+        ranges27 = ws['AY1':'AY'+str(present_row_var+1)]
+
+        ranges28 = ws['AI1':'AI10']
+        ranges29 = ws['AJ1':'AJ10']
+        ranges30 = ws['AK1':'AK10']
+        ranges31 = ws['AL1':'AL10']
+        ranges32 = ws['AM1':'AM10']
+        ranges33 = ws['AN1':'AN10']
+        ranges34 = ws['AO1':'AO10']
+        ranges35 = ws['AP1':'AP10']
+        ranges36 = ws['AQ1':'AQ10']
+
+        #now i am adding border to the each cell which present in the ranges array.
+        for cell in ranges:
+            for x in cell:
+                x.border=border
+        for cell in ranges1:
+            for x in cell:
+                x.border=border
+        for cell in ranges2:
+            for x in cell:
+                x.border=border
+        for cell in ranges3:
+            for x in cell:
+                x.border=border
+        for cell in ranges4:
+            for x in cell:
+                x.border=border
+        for cell in ranges5:
+            for x in cell:
+                x.border=border
+        for cell in ranges6:
+            for x in cell:
+                x.border=border
+        for cell in ranges7:
+            for x in cell:
+                x.border=border
+        for cell in ranges8:
+            for x in cell:
+                x.border=border
+        for cell in ranges9:
+            for x in cell:
+                x.border=border
+        for cell in ranges10:
+            for x in cell:
+                x.border=border
+        for cell in ranges11:
+            for x in cell:
+                x.border=border
+        for cell in ranges12:
+            for x in cell:
+                x.border=border
+        for cell in ranges13:
+            for x in cell:
+                x.border=border
+        for cell in ranges14:
+            for x in cell:
+                x.border=border
+        for cell in ranges15:
+            for x in cell:
+                x.border=border
+        for cell in ranges16:
+            for x in cell:
+                x.border=border
+        for cell in ranges17:
+            for x in cell:
+                x.border=border
+        for cell in ranges18:
+            for x in cell:
+                x.border=border
+        for cell in ranges19:
+            for x in cell:
+                x.border=border
+        for cell in ranges20:
+            for x in cell:
+                x.border=border
+        for cell in ranges21:
+            for x in cell:
+                x.border=border
+        for cell in ranges22:
+            for x in cell:
+                x.border=border
+        for cell in ranges23:
+            for x in cell:
+                x.border=border
+        for cell in ranges24:
+            for x in cell:
+                x.border=border
+        for cell in ranges25:
+            for x in cell:
+                x.border=border
+        for cell in ranges26:
+            for x in cell:
+                x.border=border
+        for cell in ranges27:
+            for x in cell:
+                x.border=border
+        for cell in ranges28:
+            for x in cell:
+                x.border=border
+        for cell in ranges29:
+            for x in cell:
+                x.border=border
+        for cell in ranges30:
+            for x in cell:
+                x.border=border
+        for cell in ranges31:
+            for x in cell:
+                x.border=border
+        for cell in ranges32:
+            for x in cell:
+                x.border=border
+        for cell in ranges33:
+            for x in cell:
+                x.border=border
+        for cell in ranges34:
+            for x in cell:
+                x.border=border
+        for cell in ranges35:
+            for x in cell:
+                x.border=border
+        for cell in ranges36:
+            for x in cell:
+                x.border=border
+
+        #here fill_cell object contains pattern/colour to fill in cell.
+        fill_cell = PatternFill(patternType='solid',  fgColor='FFFF00') 
+
+        for i in range(0,rows+1):
+            #here i am storing the cell(rank octant value==1) as per the given in the question.
+            if(dataframe.loc[i,'Rank Octant 1']==1):
+                ws['W'+ str(i+2)].fill = fill_cell
+            if(dataframe.loc[i,'Rank Octant 2']==1):
+                ws['Y'+ str(i+2)].fill = fill_cell
+            if(dataframe.loc[i,'Rank Octant 3']==1):
+                ws['AA'+ str(i+2)].fill = fill_cell
+            if(dataframe.loc[i,'Rank Octant 4']==1):
+                ws['AC'+ str(i+2)].fill = fill_cell
+            if(dataframe.loc[i,'Rank Octant -1']==1):
+                ws['X'+ str(i+2)].fill = fill_cell
+            if(dataframe.loc[i,'Rank Octant -2']==1):
+                ws['Z'+ str(i+2)].fill = fill_cell
+            if(dataframe.loc[i,'Rank Octant -3']==1):
+                ws['AB'+ str(i+2)].fill = fill_cell
+            if(dataframe.loc[i,'Rank Octant -4']==1):
+                ws['AD'+ str(i+2)].fill = fill_cell
+
+        for i in range(0,len(colour_row)):
+            #here in the tranisiton rows(overall and also mod transition part..)
+            maxi_maxi = 0
+            #above variable stores max value in the row(columns or AJ....AQ (when transition valye present ))
+            maxi_maxi = max(maxi_maxi,ws['AJ'+str(colour_row[i])].value)
+            maxi_maxi = max(maxi_maxi,ws['AK'+str(colour_row[i])].value)
+            maxi_maxi = max(maxi_maxi,ws['AL'+str(colour_row[i])].value)
+            maxi_maxi = max(maxi_maxi,ws['AM'+str(colour_row[i])].value)
+            maxi_maxi = max(maxi_maxi,ws['AN'+str(colour_row[i])].value)
+            maxi_maxi = max(maxi_maxi,ws['AO'+str(colour_row[i])].value)
+            maxi_maxi = max(maxi_maxi,ws['AP'+str(colour_row[i])].value)
+            maxi_maxi = max(maxi_maxi,ws['AQ'+str(colour_row[i])].value)
+            #now using if conditions, colouring the cell if it is equal to  maxi_maxi
+            if (maxi_maxi==ws['AJ'+str(colour_row[i])].value):
+                ws['AJ'+str(colour_row[i])].fill = fill_cell
+            if (maxi_maxi==ws['AK'+str(colour_row[i])].value):
+                ws['AK'+str(colour_row[i])].fill = fill_cell
+            if (maxi_maxi==ws['AL'+str(colour_row[i])].value):
+                ws['AL'+str(colour_row[i])].fill = fill_cell     
+            if (maxi_maxi==ws['AM'+str(colour_row[i])].value):
+                ws['AM'+str(colour_row[i])].fill = fill_cell    
+            if (maxi_maxi==ws['AN'+str(colour_row[i])].value):
+                ws['AN'+str(colour_row[i])].fill = fill_cell
+            if (maxi_maxi==ws['AO'+str(colour_row[i])].value):
+                ws['AO'+str(colour_row[i])].fill = fill_cell
+            if (maxi_maxi==ws['AP'+str(colour_row[i])].value):
+                ws['AP'+str(colour_row[i])].fill = fill_cell
+            if (maxi_maxi==ws['AQ'+str(colour_row[i])].value):
+                ws['AQ'+str(colour_row[i])].fill = fill_cell
+        #here two in overall transition box appling border to the each cell.
+        for i in range(17,len(dataframe),14):
+            if(dataframe.loc[i-2,'Overall Transition Count']=='+1'):
+                ranges37 = ws['AI'+str(i):'AI'+str(i+7)]
+                for cell in ranges37:
+                    for x in cell:
+                        x.border=border
+                ranges38 = ws['AJ'+str(i):'AJ'+str(i+7)]
+                for cell in ranges38:
+                    for x in cell:
+                        x.border=border
+                ranges39 = ws['AK'+str(i):'AK'+str(i+7)]
+                for cell in ranges39:
+                    for x in cell:
+                        x.border=border
+                ranges40 = ws['AL'+str(i):'AL'+str(i+7)]
+                for cell in ranges40:
+                    for x in cell:
+                        x.border=border
+                ranges41 = ws['AM'+str(i):'AM'+str(i+7)]
+                for cell in ranges41:
+                    for x in cell:
+                        x.border=border
+                ranges42 = ws['AN'+str(i):'AN'+str(i+7)]
+                for cell in ranges42:
+                    for x in cell:
+                        x.border=border
+                ranges43 = ws['AO'+str(i):'AO'+str(i+7)]
+                for cell in ranges43:
+                    for x in cell:
+                        x.border=border
+                ranges44 = ws['AP'+str(i):'AP'+str(i+7)]
+                for cell in ranges44:
+                    for x in cell:
+                        x.border=border
+                ranges45 = ws['AQ'+str(i):'AQ'+str(i+7)]
+                for cell in ranges45:
+                    for x in cell:
+                        x.border=border
+            else:
+                break
+
+        wb.save(f1)
+        print("Your output file for the above input file is ready and named as "+ f1)
+        print("\n")
+    ##Read all the excel files in a batch format from the input/ folder. Only xlsx to be allowed
+    ##Save all the excel files in a the output/ folder. Only xlsx to be allowed
+    ## output filename = input_filename[_octant_analysis_mod_5000].xlsx , ie, append _octant_analysis_mod_5000 to the original filename. 
+
+    ###Code
+from platform import python_version
+ver = python_version()
+
+if ver == "3.8.10":
+	print("Correct Version Installed")
+else:
+	print("Please install 3.8.10. Instruction are present in the GitHub Repo/Webmail. Url: https://pastebin.com/nvibxmjw")
+
+#5000
+mod=5000
+octant_analysis(mod)
+#This shall be the last lines of the code.
+end_time = datetime.now()
+print('Duration of Program Execution: {}'.format(end_time - start_time))
+
 
