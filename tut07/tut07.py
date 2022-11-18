@@ -380,3 +380,172 @@ def octant_analysis(mod):
             function(int(i*mod),min(int((i+1)*mod),len(dataframe)),present_tranistion_row,1)
        
         #till now overall octant tranistion has done!
+        #now from here longest subsquence length table.
+        dataframe['            '] = ''
+        dataframe['Longest Subsquence Length'] = ''
+        dataframe['             '] = ''
+        dataframe['              '] = ''
+        dataframe.loc[0,'Longest Subsquence Length'] = 'Octant##'
+        dataframe.loc[1,'Longest Subsquence Length'] = '+1'
+        dataframe.loc[2,'Longest Subsquence Length'] = '-1'
+        dataframe.loc[3,'Longest Subsquence Length'] = '+2'
+        dataframe.loc[4,'Longest Subsquence Length'] = '-2'
+        dataframe.loc[5,'Longest Subsquence Length'] = '+3'
+        dataframe.loc[6,'Longest Subsquence Length'] = '-3'
+        dataframe.loc[7,'Longest Subsquence Length'] = '+4'
+        dataframe.loc[8,'Longest Subsquence Length'] = '-4'
+        dataframe.loc[0,'             '] = 'Longest Subsquence Length'
+        dataframe.loc[0,'              '] = 'Count'
+
+        store_dict = {1:0,2:0,3:0,4:0,-1:0,-2:0,-3:0,-4:0}
+        #store_dict stores the present octant number present frequency.
+        max_store_dict = {1:0,2:0,3:0,4:0,-1:0,-2:0,-3:0,-4:0}
+        #max freq of the respective octant number.
+        #above i stored store_dict,max_store_dict.
+        for i in range(len(dataframe)):
+            store_dict[int(dataframe.loc[i,"Octant"])]+=1
+            #when i found any octant number then i increase the count of that octant number.
+            #and remaining octant number count i will make it to zero.!
+            if (int(dataframe.loc[i,"Octant"])!=1):
+                store_dict[1]=0
+            if (int(dataframe.loc[i,"Octant"])!=2):
+                store_dict[2]=0
+            if (int(dataframe.loc[i,"Octant"])!=3):
+                store_dict[3]=0
+            if (int(dataframe.loc[i,"Octant"])!=4):
+                store_dict[4]=0
+            if (int(dataframe.loc[i,"Octant"])!=-1):
+                store_dict[-1]=0
+            if (int(dataframe.loc[i,"Octant"])!=-2):
+                store_dict[-2]=0
+            if (int(dataframe.loc[i,"Octant"])!=-3):
+                store_dict[-3]=0
+            if (int(dataframe.loc[i,"Octant"])!=-4):
+                store_dict[-4]=0
+            #here i am storing the count if it is greater than previous_max_coun...
+            max_store_dict[int(dataframe.loc[i,"Octant"])] = max(max_store_dict[int(dataframe.loc[i,"Octant"])],store_dict[int(dataframe.loc[i,"Octant"])])
+
+    
+        #finnaly we got longest subsequence length in the form dictonary named max_store_dict.
+
+        #now i have created new 2 dictonaries..which stores the intial count 0.
+        #store_dict1 will store the current sequence length.
+        #store_dict2 will store the frequecny of longest subsequence length.
+        store_dict1 = {1:0,2:0,3:0,4:0,-1:0,-2:0,-3:0,-4:0}
+        store_dict2 = {1:0,2:0,3:0,4:0,-1:0,-2:0,-3:0,-4:0}
+        #the below lists stores the ending time '+1,-1...'(according to name) of longest subsequence length.
+        range_list1 = []
+        range_list2 = []
+        range_list3 = []
+        range_list4 = []
+        range_list_minus1 = []
+        range_list_minus2 = []
+        range_list_minus3 = []
+        range_list_minus4 = []
+        for i in range(len(dataframe)):
+            #same logic like above.
+            store_dict1[int(dataframe.loc[i,"Octant"])]+=1
+            if (int(dataframe.loc[i,"Octant"])!=1):
+                store_dict1[1]=0
+            if (int(dataframe.loc[i,"Octant"])!=2):
+                store_dict1[2]=0
+            if (int(dataframe.loc[i,"Octant"])!=3):
+                store_dict1[3]=0
+            if (int(dataframe.loc[i,"Octant"])!=4):
+                store_dict1[4]=0
+            if (int(dataframe.loc[i,"Octant"])!=-1):
+                store_dict1[-1]=0
+            if (int(dataframe.loc[i,"Octant"])!=-2):
+                store_dict1[-2]=0
+            if (int(dataframe.loc[i,"Octant"])!=-3):
+                store_dict1[-3]=0
+            if (int(dataframe.loc[i,"Octant"])!=-4):
+                store_dict1[-4]=0
+            #if present freq is equal to max freq then increase it by 1.
+            if(store_dict1[int(dataframe.loc[i,"Octant"])]==max_store_dict[int(dataframe.loc[i,"Octant"])]):
+                store_dict2[int(dataframe.loc[i,"Octant"])]+=1
+                     #here when present_freq == max_freq then it means this is the end point of longest subseqnce, so i am storing the time at this row in the array.
+                     #i am stroing it in the respective array accordingly.     
+                if (int(dataframe.loc[i,"Octant"])==1):
+                    range_list1.append(float(dataframe.loc[i,"T"]))
+                elif (int(dataframe.loc[i,"Octant"])==2):
+                    range_list2.append(float(dataframe.loc[i,"T"]))
+                elif (int(dataframe.loc[i,"Octant"])==3):
+                    range_list3.append(float(dataframe.loc[i,"T"]))
+                elif (int(dataframe.loc[i,"Octant"])==4):
+                    range_list4.append(float(dataframe.loc[i,"T"]))
+                elif (int(dataframe.loc[i,"Octant"])==-1):
+                    range_list_minus1.append(float(dataframe.loc[i,"T"]))
+                elif (int(dataframe.loc[i,"Octant"])==-2):
+                    range_list_minus2.append(float(dataframe.loc[i,"T"]))
+                elif (int(dataframe.loc[i,"Octant"])==-3):
+                    range_list_minus3.append(float(dataframe.loc[i,"T"]))
+                elif (int(dataframe.loc[i,"Octant"])==-4):
+                    range_list_minus4.append(float(dataframe.loc[i,"T"]))
+        arr = ['+1','-1','+2','-2','+3','-3','+4','-4']
+        # now printing the columns of count,longest subsequence length,count...from their dictonaries.
+        for i in range(1,9):
+            dataframe.loc[i,'             '] = max_store_dict[int(arr[i-1])]
+            dataframe.loc[i,'              '] = store_dict2[int(arr[i-1])]
+
+        dataframe['               '] = ''
+        dataframe['Longest Subsquence Length with Range']=''
+        dataframe['                '] = ''
+        dataframe['                 '] = ''
+        dataframe.loc[0,'Longest Subsquence Length with Range']='Octant###'
+        dataframe.loc[0,'                ']='Longest Subsquence Length'
+        dataframe.loc[0,'                 ']='Count'
+
+        #this index maintains the current row in the output file.(where we have to print)
+        present_row_var = 1
+        for i in range(8):
+            #here there are total 8divisions like +1,-1,+2,-2,+3,-3,+4,-4.
+            flag = 0
+            #with help of flag variable i have differentiated that in the first 2rows of ach division i should print from to etc
+            #and in the remaining rows need to print from time to to time
+            for xxx in range(store_dict2[int(arr[i])]+2):
+                flag+=1
+                if (flag==1):
+                    dataframe.loc[present_row_var,'Longest Subsquence Length with Range'] = arr[i]
+                    dataframe.loc[present_row_var,'                '] = max_store_dict[int(arr[i])]
+                    dataframe.loc[present_row_var,'                 '] = store_dict2[int(arr[i])]
+                elif (flag==2):
+                    dataframe.loc[present_row_var,'Longest Subsquence Length with Range'] = "T"
+                    dataframe.loc[present_row_var,'                '] = "From"
+                    dataframe.loc[present_row_var,'                 '] = "To"
+                else:
+                    #column according to 1,-1,2,-2,3,-3,4,-4 i should take the respective array of time.
+                    if (i==0):
+                        #difference between each particular division is 0.01 so to find start time, we need to subtract the longest squbsqnce length*0.01 from end time.
+                        dataframe.loc[present_row_var,'                '] = range_list1[flag-3] - (0.01)*(max_store_dict[int(arr[i])]-1)
+                        #can store the directly array value as it is end time.
+                        dataframe.loc[present_row_var,'                 '] = range_list1[flag-3]
+                    elif (i==1):
+                        dataframe.loc[present_row_var,'                '] = range_list_minus1[flag-3] - (0.01)*(max_store_dict[int(arr[i])]-1)
+                        dataframe.loc[present_row_var,'                 '] = range_list_minus1[flag-3]                
+                    elif (i==2):
+                        dataframe.loc[present_row_var,'                '] = range_list2[flag-3] - (0.01)*(max_store_dict[int(arr[i])]-1)
+                        dataframe.loc[present_row_var,'                 '] = range_list2[flag-3]
+                    elif (i==3):
+                        dataframe.loc[present_row_var,'                '] = range_list_minus2[flag-3] - (0.01)*(max_store_dict[int(arr[i])]-1)
+                        dataframe.loc[present_row_var,'                 '] = range_list_minus2[flag-3]
+                    elif (i==4):
+                        dataframe.loc[present_row_var,'                '] = range_list3[flag-3] - (0.01)*(max_store_dict[int(arr[i])]-1)
+                        dataframe.loc[present_row_var,'                 '] = range_list3[flag-3]
+                    elif (i==5):
+                        dataframe.loc[present_row_var,'                '] = range_list_minus3[flag-3] - (0.01)*(max_store_dict[int(arr[i])]-1)
+                        dataframe.loc[present_row_var,'                 '] = range_list_minus3[flag-3]
+                    elif (i==6):
+                        dataframe.loc[present_row_var,'                '] = range_list4[flag-3] - (0.01)*(max_store_dict[int(arr[i])]-1)
+                        dataframe.loc[present_row_var,'                 '] = range_list4[flag-3]
+                    elif (i==7):
+                        dataframe.loc[present_row_var,'                '] = range_list_minus4[flag-3] - (0.01)*(max_store_dict[int(arr[i])]-1)
+                        dataframe.loc[present_row_var,'                 '] = range_list_minus4[flag-3]
+                present_row_var+=1  
+        # increase j by 1 as we are going to next row...   
+        #             finally exporting this into output file by keeping index=False becuase we dont need the index column.
+        #using the replace function, creating the output file according to input file.
+        f2 = f.replace("input","output")
+        f1= f2.replace('.xlsx'," cm_vel_octant_analysis_mod_"+str(mod)+".xlsx")
+        dataframe.to_excel(f1,index=False)
+
