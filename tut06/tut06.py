@@ -69,3 +69,68 @@ try:
             sorted_df.drop('Timestamp',inplace=True,axis=1)
             #storing the lecture dates in the list called dates_list.
             dates_list = []
+            #mapping the dates dict help full to give unique id for each date.
+            # like date 1,date 2..date n.
+            mapping_dates = {}
+            count = 1
+            for x in lecture_days:
+                dates_list.append(x)
+                mapping_dates[x]=count
+                count+=1
+
+            #converting dataframe_registered dataframe into such a way that its output should match attendance_report_consolidated.
+            for x in range(0,len(dates_list)):
+                dataframe_registered['Date '+str(x+1)]='A'
+            dataframe_registered['Actual Lecture Taken']=''
+            dataframe_registered['Total Real']=''
+            dataframe_registered['%Attendance']=''
+            #actual lecture taken....means total no of lectures taken by sir.
+            #total real ...the no of lectures where student is present.
+            pres_row = 0
+
+            for i in range(0,len(dataframe_registered)):
+                x = dataframe_registered['Roll No'][i]
+                #storing the present roll number in the x.
+                #temp_df is creating temporary columns using dataframe(pandas).
+                temp_df = pd.DataFrame(columns = ['Date','Roll','Name','Total Attendance Count','Real','Duplicate','Invalid','Absent'])
+                #creating initial dict for each date.
+                some_dicts = {'Date':'','Roll':x,'Name':dataframe_registered['Name'][i],'Total Attendance Count':0,'Real':0,'Duplicate':0,'Invalid':0,'Absent':0}
+                #making dataframe of above dict.
+                row_dataframe = pd.DataFrame(some_dicts,index = [0])
+                #concating temp_df with some_dicts.
+                temp_df = pd.concat([temp_df,row_dataframe],ignore_index = True)
+                #dict_fake stores the date as 1, if it is not valid date.
+                dict_fake = {}
+                #dict_pres stores the date as 1, if it is valid date.
+                dict_pres = {}
+                for p in range(0,len(dates_list)):
+                    dict_fake[dates_list[p]]=0
+                    dict_pres[dates_list[p]]=0
+                #now iterating for each roll no through attendance_sheet dataframe till it matches with its date.
+                for j in range(pres_row,len(sorted_df)):
+                    y = sorted_df['Roll'][j]
+                    if(type(y)==float):
+                        break
+                    if(x<y):
+                        pres_row=j
+                        break
+                    else :
+                        #total_days[date]==1 is one means it is either mon or thursday..
+                        #and timeshould be between 2 to 3 to be a valid date.
+                        if(total_days[sorted_df['Date'][j]]==1 and  str(sorted_df['Time'][j])>='14:00:00' and str(sorted_df['Time'][j])<='15:00:00'):
+                            dataframe_registered["Date "+ str(mapping_dates[sorted_df['Date'][j]])][i]='P'
+                            #so keep it as P, also make dict_pres = 1 as he attended the class.
+                            dict_pres[sorted_df['Date'][j]]+=1
+                        elif(total_days[sorted_df['Date'][j]]==1):
+                            #it is mon or thur but not in between 2 to 3, so it comes under fake.
+                            dict_fake[sorted_df['Date'][j]]+=1
+                no_of_ps = 0
+                #here in this variable we store no of present in the lecture dates
+                for z in range(0,len(dates_list)):
+                    if dataframe_registered['Date '+str(z+1)][i]=='P':
+                        no_of_ps+=1
+                dataframe_registered['Actual Lecture Taken'][i]=len(dates_list)
+                dataframe_registered['Total Real'][i]=no_of_ps
+                dataframe_registered['%Attendance'][i]=round((no_of_ps/len(dates_list))*100,2)
+                # s = pd.Series((len(dataframe_registered)-13)*[None,None,None],index=['Date','Roll','Name','Total Attendance Count','Real','Duplicate','Invalid','Absent'])
+                #dict_fake contains the invalid dates or fake attedances.
