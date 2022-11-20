@@ -172,7 +172,7 @@ try:
             dataframe_registered.to_excel('./output/attendance_report_consolidated.xlsx',index=False)
     except:
         print('Any compilation error would be in the function')
-
+    
     # Python code to illustrate Sending mail with attachment.
     try:
         def send_mail():
@@ -187,7 +187,7 @@ try:
             #here i am storing the sender's email and receivers email address
             msg['From'] = fromaddr
             msg['To'] = toaddr
-
+           
             # storing the subject 
             msg['Subject'] = "Tut 06 attendance_report_consolidated file"
 
@@ -199,7 +199,7 @@ try:
 
             # add the file name with the extension here which you want to sent.
             filename = "attendance_report_consolidated.xlsx"
-            attachment = open("/Users/srivardhan/Documents/my_python_lab_tut6/output/attendance_report_consolidated.xlsx", "rb")
+            attachment = open("./output/attendance_report_consolidated.xlsx", "rb")
 
             # instance of MIMEBase and named as p
             p = MIMEBase('application', 'octet-stream')
@@ -216,8 +216,11 @@ try:
             s = smtplib.SMTP('smtp.gmail.com', 587)
 
             # for security purpose start the tls.
-            s.starttls()
-
+            try:
+                s.starttls()
+            except:
+                print('Please dont use IIT Patna wifi, use personal hotspot to send the mail.')
+                return
             #here use your email adress, and authenication password.(enable 2-step verification password, required to send the mail)
             s.login(fromaddr, "gmuuknfpuxnlfkif")
 
@@ -233,8 +236,8 @@ try:
         print('some compilation error inside the send mail func')
 
     attendance_report()
+    print('output files generated')
     send_mail()
-
     ver = python_version()
 
     if ver == "3.8.10":
@@ -246,7 +249,6 @@ try:
     print('Duration of Program Execution: {}'.format(end_time - start_time))
 except:
     print("Please install the required libraries.")
-
 
 
 
