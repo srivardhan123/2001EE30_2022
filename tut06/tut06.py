@@ -172,3 +172,62 @@ try:
             dataframe_registered.to_excel('./output/attendance_report_consolidated.xlsx',index=False)
     except:
         print('Any compilation error would be in the function')
+
+    # Python code to illustrate Sending mail with attachment.
+    try:
+        def send_mail():
+            #here add your gmail email-adress.
+            fromaddr = "srivardhanrao9009@gmail.com"
+            #add the sender's gmail adress.
+            toaddr = "srins4545@gmail.com"
+
+            # instance of MIMEMultipart
+            msg = MIMEMultipart()
+
+            #here i am storing the sender's email and receivers email address
+            msg['From'] = fromaddr
+            msg['To'] = toaddr
+
+            # storing the subject 
+            msg['Subject'] = "Tut 06 attendance_report_consolidated file"
+
+            #here i am storing the body of the mail,in the string.
+            body = "here is the file"
+
+            # attach the body with the msg instance
+            msg.attach(MIMEText(body, 'plain'))
+
+            # add the file name with the extension here which you want to sent.
+            filename = "attendance_report_consolidated.xlsx"
+            attachment = open("/Users/srivardhan/Documents/my_python_lab_tut6/output/attendance_report_consolidated.xlsx", "rb")
+
+            # instance of MIMEBase and named as p
+            p = MIMEBase('application', 'octet-stream')
+
+            # To change the payload into encoded form
+            p.set_payload((attachment).read())
+
+            # encode into base64
+            encoders.encode_base64(p)
+
+            p.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+            msg.attach(p)
+
+            s = smtplib.SMTP('smtp.gmail.com', 587)
+
+            # for security purpose start the tls.
+            s.starttls()
+
+            #here use your email adress, and authenication password.(enable 2-step verification password, required to send the mail)
+            s.login(fromaddr, "gmuuknfpuxnlfkif")
+
+            #now convert multipart msg into the string.
+            text = msg.as_string()
+
+            # here i am sending the email..by representing fromaddr, toaddr, text.
+            s.sendmail(fromaddr, toaddr, text)
+
+            #quitting the session atlast.
+            s.quit()
+    except:
+        print('some compilation error inside the send mail func')
