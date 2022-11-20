@@ -69,6 +69,7 @@ try:
             sorted_df.drop('Timestamp',inplace=True,axis=1)
             #storing the lecture dates in the list called dates_list.
             dates_list = []
+
             #mapping the dates dict help full to give unique id for each date.
             # like date 1,date 2..date n.
             mapping_dates = {}
@@ -134,3 +135,40 @@ try:
                 dataframe_registered['%Attendance'][i]=round((no_of_ps/len(dates_list))*100,2)
                 # s = pd.Series((len(dataframe_registered)-13)*[None,None,None],index=['Date','Roll','Name','Total Attendance Count','Real','Duplicate','Invalid','Absent'])
                 #dict_fake contains the invalid dates or fake attedances.
+                for count1 in range(1,len(dates_list)+1):
+                    temp_dict_perdate = {}
+                    #this will store the invalids or absent or real for particular date of each person
+                    temp_dict_perdate['Date'] = "Date " + str(count1)
+                    if (dict_pres[dates_list[count1-1]]>0):
+                        temp_dict_perdate['Real'] = 1
+                    else:
+                        temp_dict_perdate['Real'] = 0
+                    if (dict_pres[dates_list[count1-1]]>0):
+                        temp_dict_perdate['Duplicate'] = dict_pres[dates_list[count1-1]]-1
+                    else:
+                        temp_dict_perdate['Duplicate'] = 0
+                    temp_dict_perdate['Invalid'] = dict_fake[dates_list[count1-1]]
+                    if (dict_pres[dates_list[count1-1]]>0):
+                        temp_dict_perdate['Absent'] = 0
+                    else:
+                        temp_dict_perdate['Absent'] = 1
+                    #as we know total attedance count = sum of real + duplicate + invalid
+                    temp_dict_perdate['Total Attendance Count'] = temp_dict_perdate['Real']+temp_dict_perdate['Duplicate']+temp_dict_perdate['Invalid']
+
+                    df2 = pd.DataFrame(temp_dict_perdate,index=[0])
+                    #concating the df2..temp_dict_perdate each time to the main student data.
+                    temp_df = pd.concat([temp_df,df2],ignore_index=True)
+                #now here i am counting all total attendance count,real,duplicate,invalid,absent of a each student by adding the data of individual
+                #dates.
+                for count2 in range(1,len(dates_list)+1):
+                    temp_df.loc[0,'Total Attendance Count'] += temp_df.loc[count2,'Total Attendance Count']
+                    temp_df.loc[0,'Real'] += temp_df.loc[count2,'Real']
+                    temp_df.loc[0,'Duplicate'] += temp_df.loc[count2,'Duplicate']
+                    temp_df.loc[0,'Invalid'] += temp_df.loc[count2,'Invalid']
+                    temp_df.loc[0,'Absent'] += temp_df.loc[count2,'Absent']
+                #now converting this dataframe into excel sheet with output file according to roll number.
+                temp_df.to_excel('./output/'+  str(x) + '.xlsx',index=False)
+            #complete dataframe_registered will be the dataframe of attendance_report_consolidated file.
+            dataframe_registered.to_excel('./output/attendance_report_consolidated.xlsx',index=False)
+    except:
+        print('Any compilation error would be in the function')
