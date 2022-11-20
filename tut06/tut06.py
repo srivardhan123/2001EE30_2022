@@ -231,3 +231,31 @@ try:
             s.quit()
     except:
         print('some compilation error inside the send mail func')
+
+    attendance_report()
+    send_mail()
+
+    ver = python_version()
+
+    if ver == "3.8.10":
+        print("Correct Version Installed")
+    else:
+        print("Please install 3.8.10. Instruction are present in the GitHub Repo/Webmail. Url: https://pastebin.com/nvibxmjw")
+    #This shall be the last lines of the code.
+    end_time = dt.now()
+    print('Duration of Program Execution: {}'.format(end_time - start_time))
+except:
+    print("Please install the required libraries.")
+
+
+
+
+
+
+
+
+
+
+
+
+
