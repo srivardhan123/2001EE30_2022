@@ -235,6 +235,9 @@ for i in range(0,len(dataframe_pakinnings)):
 			indian_bowlers_maidens[dataframe_pakinnings['2nd innings bowler'][i]]+=1
 	#in this variable,storing till which over the 1st innings took place.
 	total_overs = dataframe_pakinnings['1st innings bowl'][i]
+
+
+
 #NOW INDIA INNINGS!
 #similarly i am calculating in the 2nd innings.
 
@@ -423,7 +426,7 @@ for i in range(0,len(dataframe_indinnings)):
 		if(dataframe_indinnings['result of present_bowl'][i]=='leg byes, FOUR' or dataframe_indinnings['result of present_bowl'][i]=='leg byes, 1 run'):
 			total_legbyes_ind+=mp1[dataframe_indinnings['result of present_bowl'][i]]
 	if(i%6==5):
-		#in this over, i am checking whether the over is maiden or not.
+		#
 		runs_given = 0
 		if(dataframe_indinnings['result of present_bowl'][i]!='leg byes, FOUR' and dataframe_indinnings['result of present_bowl'][i]!='leg byes, 1 run'):
 			runs_given+=mp1[dataframe_indinnings['result of present_bowl'][i]]
@@ -441,6 +444,7 @@ for i in range(0,len(dataframe_indinnings)):
 			pakisthan_bowlers_maidens[dataframe_indinnings['bowler'][i]]+=1
 		
 	total_overs_ind = dataframe_indinnings['over'][i]
+
 file1 = open("Scorecard.txt","w")
 
 #1st innings results storing in the scorecard.txt, using write function by entering the data which collected above.
@@ -522,6 +526,74 @@ file1.write("\n")
 file1.write("\n")
 file1.write("\n")
 
+#indian innings
+file1.write(f"{'India Innings': <80}{str(total_score_ind)+'-'+str(total_wickets_ind)+'('+str(total_overs_ind)+str(')')}\n")
+file1.write("\n")
+file1.write(f"{'Batter':<60}{'R':<5}{'B':<5}{'4s':<5}{'6s':<5}{'SR':<5}\n")
+
+orders_batsman_ind = []
+
+#using this orders_batsman, i will store the order of openers,middle ordered batsman,bowlers etc in a order.
+orders_batsman_ind.append(5)
+orders_batsman_ind.append(4)
+orders_batsman_ind.append(3)
+orders_batsman_ind.append(1)
+orders_batsman_ind.append(6)
+orders_batsman_ind.append(0)
+orders_batsman_ind.append(2)
+
+for i in range(0,len(orders_batsman_ind)):
+	length_of_line = 20+len(str(how_wicket_indbtrs[batters_in_india[orders_batsman_ind[i]]]))+len(str(bowler_wicket_indbtrs[batters_in_india[orders_batsman_ind[i]]])) + len(str(individual_score_indbtrs[batters_in_india[orders_batsman_ind[i]]]))
+	value = 62-length_of_line
+	sample = ''
+	for z in range(0,value):
+		sample+=' '
+	sample2 = '   '
+	if(len(str(individual_bowls_indbtrs[batters_in_india[orders_batsman_ind[i]]]))==1):
+		sample2+=' '
+	sample3 = '    '
+	sample4 = '   '
+	if(i!=0 and i!=6):
+		file1.write(f"{batters_in_india[orders_batsman_ind[i]]:<20}{how_wicket_indbtrs[batters_in_india[orders_batsman_ind[i]]]}{bowler_wicket_indbtrs[batters_in_india[orders_batsman_ind[i]]]}{sample}{individual_score_indbtrs[batters_in_india[orders_batsman_ind[i]]]}{sample2}{individual_bowls_indbtrs[batters_in_india[orders_batsman_ind[i]]]}{sample3}{individual_fours_indbtrs[batters_in_india[orders_batsman_ind[i]]]}{sample3}{individual_sixes_indbtrs[batters_in_india[orders_batsman_ind[i]]]}{sample4}{round((individual_score_indbtrs[batters_in_india[orders_batsman_ind[i]]]/individual_bowls_indbtrs[batters_in_india[orders_batsman_ind[i]]])*100,2)}\n")
+	elif (i==0):
+		file1.write(f"{batters_in_india[orders_batsman_ind[i]]+' (c)':<20}{how_wicket_indbtrs[batters_in_india[orders_batsman_ind[i]]]}{bowler_wicket_indbtrs[batters_in_india[orders_batsman_ind[i]]]}{sample}{individual_score_indbtrs[batters_in_india[orders_batsman_ind[i]]]}{sample2}{individual_bowls_indbtrs[batters_in_india[orders_batsman_ind[i]]]}{sample3}{individual_fours_indbtrs[batters_in_india[orders_batsman_ind[i]]]}{sample3}{individual_sixes_indbtrs[batters_in_india[orders_batsman_ind[i]]]}{sample4}{round((individual_score_indbtrs[batters_in_india[orders_batsman_ind[i]]]/individual_bowls_indbtrs[batters_in_india[orders_batsman_ind[i]]])*100,2)}\n")
+	elif (i==6):
+		file1.write(f"{batters_in_india[orders_batsman_ind[i]]+' (wk)':<20}{how_wicket_indbtrs[batters_in_india[orders_batsman_ind[i]]]}{bowler_wicket_indbtrs[batters_in_india[orders_batsman_ind[i]]]}{sample}{individual_score_indbtrs[batters_in_india[orders_batsman_ind[i]]]}{sample2}{individual_bowls_indbtrs[batters_in_india[orders_batsman_ind[i]]]}{sample3}{individual_fours_indbtrs[batters_in_india[orders_batsman_ind[i]]]}{sample3}{individual_sixes_indbtrs[batters_in_india[orders_batsman_ind[i]]]}{sample4}{round((individual_score_indbtrs[batters_in_india[orders_batsman_ind[i]]]/individual_bowls_indbtrs[batters_in_india[orders_batsman_ind[i]]])*100,2)}\n")
+
+file1.write(f"{'Extras':<60}{total_legbyes_ind+total_wides_ind}{'(b 0,'+'lb '+str(total_legbyes_ind)+',w '+str(total_wides_ind)+',nb 0,p 0)'}\n")
+file1.write(f"{'Total':59}{str(total_score_ind)+'('+str(total_wickets_ind)+' '+'wkts, '+str(total_overs_ind)+' Ov)'}\n")
+file1.write(f"{'Did not Bat':<20}{batters_in_india[7]}{' , '}{batters_in_india[8]}{' , '}{batters_in_india[9]}{' , '}{batters_in_india[10]}")
+file1.write("\n")
+file1.write("\n")
+file1.write(f"{'Fall of Wickets'}\n")
+
+for i in range(0,len(fall_of_wickets_ind)):
+	if(i==len(fall_of_wickets_ind)-1):
+		file1.write(f"{str(fall_of_wickets_ind[i])}\n")
+	else:
+		file1.write(f"{str(fall_of_wickets_ind[i])}{', '}")
+
+file1.write("\n")
+file1.write(f"{'Bowler':<45}{'O':<6}{'M':<6}{'R':<6}{'W':<6}{'NB':<6}{'WD':<6}{'ECO':<6}\n")
+
+#orders_bowlers stores the order of bowlers in the innings according to scorecard in cricbuzz.
+order_bowlers_pak = []
+order_bowlers_pak.append(3)
+order_bowlers_pak.append(0)
+order_bowlers_pak.append(1)
+order_bowlers_pak.append(4)
+order_bowlers_pak.append(2)
+
+
+for i in range(0,len(order_bowlers_pak)):
+	file1.write(f"{bowlers_in_pak[order_bowlers_pak[i]]:<45}{int(pakisthan_bowlers_balls[bowlers_in_pak[order_bowlers_pak[i]]]/6)+(pakisthan_bowlers_balls[bowlers_in_pak[order_bowlers_pak[i]]]%6)/10:<6}{pakisthan_bowlers_maidens[bowlers_in_pak[order_bowlers_pak[i]]]:<6}{pakisthan_bowlers_runs[bowlers_in_pak[order_bowlers_pak[i]]]:<6}{pakisthan_bowlers_wickets[bowlers_in_pak[order_bowlers_pak[i]]]:<6}{pakisthan_bowlers_nbs[bowlers_in_pak[order_bowlers_pak[i]]]:<6}{pakisthan_bowlers_wides[bowlers_in_pak[order_bowlers_pak[i]]]:<6}{round((pakisthan_bowlers_runs[bowlers_in_pak[order_bowlers_pak[i]]]/pakisthan_bowlers_balls[bowlers_in_pak[order_bowlers_pak[i]]])*6,2)}\n")
+
+file1.write("\n")
+
+#here writing the powerplay runs in the 2nd innings.
+file1.write(f"{'Powerplays':<40}{'Overs':<40}{'Runs':<40}\n")
+
+file1.write(f"{'Mandatory':<40}{'0.1-6':<42}{power_play_runs_ind}\n")
 
 
 
